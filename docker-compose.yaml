@@ -10,10 +10,6 @@ services:
       - ./example_tables/:/container-entrypoint-initdb.d
     ports:
       - 1521:1521
-    dns:
-      - 192.168.1.12
-      - 77.88.8.8
-      - 77.88.8.1
     environment:
       APP_USER: "root"
       APP_USER_PASSWORD: "root"
@@ -25,7 +21,3 @@ services:
     hostname: dbeaver.g
     restart: no
     network_mode: bridge
-    dns:
-      - 192.168.1.12
-      - 77.88.8.8
-      - 77.88.8.1
