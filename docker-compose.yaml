@@ -21,3 +21,5 @@ services:
     hostname: dbeaver.g
     restart: no
     network_mode: bridge
+    ports:
+      - 8978:8978
