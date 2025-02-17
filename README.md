@@ -14,7 +14,7 @@ cd oracle_db_on_linux
 mkdir data
 chmod a+rw data
 
-docker compose up
+docker compose up --build --force-recreate
 ```
 
 ## Дефолтные логины и пароли
@@ -42,21 +42,25 @@ docker compose up
 
 Теперь заходим в аккаунт смотрелки. Шестеренка в правом верхнем углу и Login.
 
-Далее чтобы подключиться к БД нужно узнать *ip* контейнера с БД.
-Сделать это можно следующей командой (работает на линуксе/маке):
+Жмакаем на плюсик в квадрате в левом верхнем углу, и на *New connection*.
 
-```
-docker inspect sql_server.g  | jq -r '.[].NetworkSettings.IPAddress'
-```
+Заполняем:
 
-Возвращаемя в смотрелку и Жмакаем на плюсик в квадрате в левом верхнем углу, и на *New connection*.
+|Название|Значение|
+|--|--|
+|Host|sql_server.g|
+|Database|FREEPDB1|
+|Service type|Service|
+|Role|SYSDBA|
+|User name|SYS|
+|User password|root|
 
-Заполняем так чтобы выглядело так же:
+так чтобы выглядело так же:
 ![Так подключаться](images/2.jpg)
 
-Только подставте свой *ip*, а не *172.17.0.7*
 
 Если хотите подключиться не как админ (SYS), то Role выберете не SYSDBA, а Normal.
+И логин/пароль соответственно другие введите.
 
 ## Доп инфа
 
