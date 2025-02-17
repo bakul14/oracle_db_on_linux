@@ -29,7 +29,7 @@ services:
       - sql_server
 
   php:
-    image: php:fpm-alpine
+    build: php
     container_name: php.g
     hostname: php.g
     networks:
