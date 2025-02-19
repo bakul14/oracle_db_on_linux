@@ -1,4 +1,4 @@
-<form action="action.php" method="post">
+<form action="index.php" method="post">
     Name: <input type="text" name="name"><br>
     <input type="submit">
 </form>

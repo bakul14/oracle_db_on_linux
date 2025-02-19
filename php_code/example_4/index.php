@@ -6,7 +6,7 @@
 ?>
 <P>
 
-<form action="action.php" method="get">
+<form action="index.php" method="get">
     Name:   <input type="text" name="name"><br>
     Email:  <input type="text" name="email"><br>
             <input type="submit">

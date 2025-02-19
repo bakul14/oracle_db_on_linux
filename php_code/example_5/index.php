@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <P>
 
-<form action="action.php" method="get">
+<form action="index.php" method="post">
     <input type='radio' name='kurs' value='КТБД'>Конструкторско-технологические базы данных<br>
     <input type='radio' name='kurs' value='СФМ'>Системы функционально моделирования<br>
     <input type='radio' name='kurs' value='СИИ'>Системы искусственного интелекта<br>
