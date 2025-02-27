@@ -139,3 +139,9 @@ sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+## Контактные данные
+
+До конца этого сема точно эта репа будет активно поддерживаться. Т. е. до 01.06.25
+
+По всем вопросам можно писать [мне в телегу](https://t.me/boris_karyshev)
