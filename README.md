@@ -33,7 +33,7 @@ docker compose up --build --force-recreate
 Они доступны по пути
 
 ```
-https://localhost:8080
+http://localhost:8080
 ```
 
 ## Oracle Database
@@ -142,6 +142,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 ## Контактные данные
 
-До конца этого сема точно эта репа будет активно поддерживаться. Т. е. до 01.06.25
+До конца сема эта репа будет активно поддерживаться. Т. е. до 01.06.25
 
 По всем вопросам можно писать [мне в телегу](https://t.me/boris_karyshev)
