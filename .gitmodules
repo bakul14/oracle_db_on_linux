@@ -1,3 +1,6 @@
 [submodule "php_code/asu"]
 	path = php_code/asu
 	url = git@github.com:bakul14/asu.git
+[submodule "php_code/localhost"]
+	path = php_code/localhost
+	url = git@github.com:bakul14/localhost.git
