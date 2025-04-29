@@ -51,7 +51,7 @@ services:
     networks:
       - internal
     ports:
-      - 8080:80
+      - 80:80
     restart: no
     depends_on:
       - php
