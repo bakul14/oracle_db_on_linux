@@ -10,6 +10,8 @@ help:
 
 up:
 	@echo "Система запускается..."
+	mkdir -p data
+	chmod a+rw data
 	docker compose up --build --force-recreate
 
 down:
