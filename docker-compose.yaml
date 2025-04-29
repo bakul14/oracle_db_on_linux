@@ -9,6 +9,7 @@ services:
     volumes:
       - ./data:/opt/oracle/oradata
       - ./example_tables/:/container-entrypoint-initdb.d
+      - ./php_code/asu/sql:/asu/sql
     ports:
       - 1521:1521
     environment:
