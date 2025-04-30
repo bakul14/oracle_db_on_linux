@@ -12,7 +12,7 @@ up:
 	@echo "Система запускается..."
 	mkdir -p data
 	chmod a+rw data
-	docker compose up --build --force-recreate
+	docker compose up --build 
 
 down:
 	@echo "Система останавливается..."
