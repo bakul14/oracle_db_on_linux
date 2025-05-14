@@ -201,16 +201,18 @@ ALTER TABLE users ADD (
     CONSTRAINT c_job_id FOREIGN KEY (user_job_id) REFERENCES jobs
 );
 
-PROMPT Создание тригеров CREATE
+PROMPT Создание тригера 1
+CREATE
 OR REPLACE TRIGGER tr_components BEFORE INSERT ON components FOR EACH ROW BEGIN
 SELECT
     seq_components.NEXTVAL
 INTO :new.comp_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 2
 CREATE
 OR REPLACE TRIGGER tr_docs BEFORE INSERT ON docs FOR EACH ROW BEGIN
 SELECT
@@ -218,9 +220,10 @@ SELECT
 INTO :new.doc_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 3
 CREATE
 OR REPLACE TRIGGER tr_items BEFORE INSERT ON items FOR EACH ROW BEGIN
 SELECT
@@ -228,9 +231,10 @@ SELECT
 INTO :new.item_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 4
 CREATE
 OR REPLACE TRIGGER tr_jobs BEFORE INSERT ON jobs FOR EACH ROW BEGIN
 SELECT
@@ -238,9 +242,10 @@ SELECT
 INTO :new.job_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 5
 CREATE
 OR REPLACE TRIGGER tr_orders BEFORE INSERT ON orders FOR EACH ROW BEGIN
 SELECT
@@ -248,9 +253,10 @@ SELECT
 INTO :new.order_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 6
 CREATE
 OR REPLACE TRIGGER tr_raws BEFORE INSERT ON raws FOR EACH ROW BEGIN
 SELECT
@@ -258,9 +264,10 @@ SELECT
 INTO :new.raw_id
 FROM
     DUAL;
-
 END;
+/
 
+PROMPT Создание тригера 7
 CREATE
 OR REPLACE TRIGGER tr_users BEFORE INSERT ON users FOR EACH ROW BEGIN
 SELECT
@@ -268,7 +275,9 @@ SELECT
 INTO :new.user_id
 FROM
     DUAL;
-
 END;
+/
 
 SPOOL OFF;
+
+exit

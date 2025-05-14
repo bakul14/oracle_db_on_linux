@@ -3,7 +3,8 @@
 sqlplus sys/root as sysdba
 ```
 
-Для создания таблиц:
-```sql
-sqlplus sys/root as sysdba @/dz/sql/create_all.sql
+Один раз при запуске АСУ:
+```bash
+sqlplus sys/root as sysdba @/dz/sql/create_shema.sql
+sqlplus MISHA/MISHA @/dz/sql/create_all.sql
 ```
