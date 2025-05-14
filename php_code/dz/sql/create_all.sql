@@ -134,7 +134,9 @@ PROMPT Добавление первичного ключа для raws
 ALTER TABLE raws
 DROP CONSTRAINT raws;
 
-ALTER TABLE raws ADD (CONSTRAINT raws PRIMARY KEY (raw_id)) PROMPT Создание таблицы "Пользователи"
+ALTER TABLE raws ADD (CONSTRAINT raws PRIMARY KEY (raw_id));
+
+PROMPT Создание таблицы "Пользователи"
 DROP TABLE users CASCADE CONSTRAINTS;
 
 CREATE TABLE
