@@ -36,7 +36,7 @@ services:
     networks:
       - internal
     volumes:
-      - ./php_code/localhost:/files:ro
+      - ./php_code:/files:ro
     ports:
       - 9000:9000
     restart: no
@@ -48,7 +48,7 @@ services:
     container_name: nginx.g
     hostname: nginx.g
     volumes:
-      - ./php_code/localhost:/files:ro
+      - ./php_code:/files:ro
     networks:
       - internal
     ports:
