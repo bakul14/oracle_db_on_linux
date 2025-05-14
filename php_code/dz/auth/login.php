@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         input[type="text"],
         input[type="password"] {
-            width: calc(100%);
+            width: calc(100% - 20px);
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 3px;
