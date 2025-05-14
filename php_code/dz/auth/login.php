@@ -3,8 +3,11 @@ session_start();
 
 require 'auth.php';
 
-$admin_login = 'MISHA';
-$admin_password = 'MISHA';
+$db_shema_login = 'root';
+$db_shema_pass = 'root';
+
+$admin_login = 'MISHA';    // CRINGE
+$admin_password = 'MISHA'; // CRINGE
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -13,9 +16,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($username === $admin_login && $password === $admin_password) {
         $_SESSION['username'] = $username;
+        $_SESSION['role'] = 'admin';
         header('Location: /adm_int/index.php');
         exit();
     } else {
+        try {
+            $ip = dns_get_record('sql_server.g', DNS_A)[0]['ip'];
+            $db = "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=$ip)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=FREEPDB1)))";
+            $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
+            if (!$conn) {
+                throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
+            }
+        } catch (Exception $e) {
+            echo 'Ошибка: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8') . '<br>';
+            exit();
+        }
+
+        // SQL-запрос для поиска юзера, сравнение с данными из БД и переадреация на интерфейс юзера, если все ок
+
+        // Закрываем соединение
+        if (isset($conn)) {
+            oci_close($conn);
+        }
+
         $error_message = 'Пользователь не найден';
     }
 }
