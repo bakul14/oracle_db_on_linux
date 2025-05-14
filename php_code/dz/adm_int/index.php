@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АСУ ИУ4-82Б - Главная страница</title>
+    <title>АСУ изготовления радиопередатчика - Главная страница</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -101,7 +101,7 @@
 <body>
 
     <div class="sidebar">
-        <h3>Таблицы</h3>
+        <h3>Администратор</h3>
         <button onclick="alert('Открытие таблицы Заказы...')">Заказы</button>
         <button onclick="alert('Открытие таблицы Документы...')">Документы</button>
         <button onclick="alert('Открытие таблицы Устройства...')">Устройства</button>
