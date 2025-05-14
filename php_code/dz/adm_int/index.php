@@ -11,6 +11,7 @@
             background-color: #f4f4f4;
             margin: 0;
             display: flex;
+            position: relative; /* Позволяет позиционировать элементы внутри body */
         }
 
         .sidebar {
@@ -77,6 +78,23 @@
         .action-buttons button:hover {
             background-color: #218838;
         }
+
+        /* Стили для кнопки "Выход" */
+        .logout-button {
+            position: absolute; /* Позиционирование относительно родителя */
+            top: 20px; /* Отступ сверху */
+            right: 20px; /* Отступ справа */
+            padding: 10px 15px;
+            background-color: #dc3545; /* Красный цвет */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333; /* Темнее при наведении */
+        }
     </style>
 </head>
 
@@ -95,6 +113,10 @@
 
     <div class="content">
         <h2>Работники, закрепленные за конкретной работой</h2>
+
+        <form action="/auth/logout.php" method="post" style="display:inline;">
+            <button type="submit" class="logout-button">Выход</button>
+        </form>
 
         <!-- Кнопки для внесения и извлечения данных -->
         <div class="action-buttons">
