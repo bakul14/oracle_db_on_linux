@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             oci_execute($stmt);
 
             if (oci_fetch_array($stmt, OCI_ASSOC)) {
-                echo "Успешный вход!";
+                header('Location: /user_int/index.php');
             } else {
                 echo "Неверный логин или пароль.";
             }
