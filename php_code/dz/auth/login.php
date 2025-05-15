@@ -5,6 +5,7 @@ require 'auth.php';
 
 $db_shema_login = 'MISHA';
 $db_shema_pass = 'MISHA';
+$db_sid = 'FREE';
 
 $admin_login = 'MISHA';
 $admin_password = 'MISHA';
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $ip = dns_get_record('sql_server.g', DNS_A)[0]['ip'];
-            $db = "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=$ip)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=FREEPDB1)))";
+            $db = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=$ip)(PORT=1521))(CONNECT_DATA=(SID=$db_sid)))";
             $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
             if (!$conn) {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
