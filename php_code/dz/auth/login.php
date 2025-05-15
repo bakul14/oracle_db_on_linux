@@ -3,8 +3,8 @@ session_start();
 
 require 'auth.php';
 
-$db_shema_login = 'root';
-$db_shema_pass = 'root';
+$db_shema_login = 'MISHA';
+$db_shema_pass = 'MISHA';
 
 $admin_login = 'MISHA';    // CRINGE
 $admin_password = 'MISHA'; // CRINGE
@@ -27,19 +27,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$conn) {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
+            // Подготовленный запрос для проверки кредов
+            $sql = "SELECT * FROM users WHERE user_name = :username AND user_thirdname = :password";
+            $stmt = oci_parse($conn, $sql);
+
+            oci_bind_by_name($stmt, ':username', $username);
+            oci_bind_by_name($stmt, ':password', $password);
+
+            oci_execute($stmt);
+
+            if (oci_fetch_array($stmt, OCI_ASSOC)) {
+                echo "Успешный вход!";
+            } else {
+                echo "Неверный логин или пароль.";
+            }
+
+            oci_free_statement($stmt);
+            oci_close($conn);
+
         } catch (Exception $e) {
             echo 'Ошибка: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8') . '<br>';
             exit();
         }
-
-        // SQL-запрос для поиска юзера, сравнение с данными из БД и переадреация на интерфейс юзера, если все ок
-
-        // Закрываем соединение
-        if (isset($conn)) {
-            oci_close($conn);
-        }
-
-        $error_message = 'Пользователь не найден';
     }
 }
 ?>
