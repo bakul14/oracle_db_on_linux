@@ -6,8 +6,8 @@ require 'auth.php';
 $db_shema_login = 'MISHA';
 $db_shema_pass = 'MISHA';
 
-$admin_login = 'MISHA';    // CRINGE
-$admin_password = 'MISHA'; // CRINGE
+$admin_login = 'MISHA';
+$admin_password = 'MISHA';
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
