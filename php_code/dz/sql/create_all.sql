@@ -1,4 +1,6 @@
-SPOOL asutp_start.log PROMPT Создание последовательностей
+SPOOL asutp_start.log 
+
+PROMPT Создание последовательностей
 DROP SEQUENCE seq_components;
 
 DROP SEQUENCE seq_docs;
@@ -143,11 +145,12 @@ CREATE TABLE
     users (
         user_job_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
-        user_surname VARCHAR(20) NOT NULL,
-        user_post VARCHAR(20) NOT NULL,
-        user_thirdname VARCHAR(20) NOT NULL,
-        user_ph VARCHAR(20) NOT NULL,
-        user_name VARCHAR(20) NOT NULL
+        user_firstname VARCHAR(40) NOT NULL,
+        user_secondname VARCHAR(40) NOT NULL,
+        user_thirdname VARCHAR(40) NOT NULL,
+        user_post VARCHAR(40) NOT NULL,
+        user_login VARCHAR(40) NOT NULL,
+        user_password VARCHAR(40) NOT NULL
     );
 
 PROMPT Добавление первичного ключа для users

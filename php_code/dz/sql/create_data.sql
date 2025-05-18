@@ -186,3 +186,5 @@ VALUES
 COMMIT;
 
 SPOOL OFF;
+
+exit
