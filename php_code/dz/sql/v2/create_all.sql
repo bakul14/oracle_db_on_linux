@@ -59,3 +59,5 @@ ALTER TABLE users
 DROP CONSTRAINT users;
 
 ALTER TABLE users ADD (CONSTRAINT users PRIMARY KEY (user_id));
+
+exit

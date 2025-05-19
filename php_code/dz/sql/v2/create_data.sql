@@ -18,10 +18,10 @@ VALUES
     (
         1,
         NULL,
-        'Михаил',
-        'Бакулевский',
-        'Владиславович',
-        'Инженер',
+        'Mikhail',
+        'Bakulevskiy',
+        'Vladislavovich',
+        'Engineer',
         'admin',
         'admin'
     );
@@ -29,3 +29,5 @@ VALUES
 COMMIT;
 
 SPOOL OFF;
+
+exit

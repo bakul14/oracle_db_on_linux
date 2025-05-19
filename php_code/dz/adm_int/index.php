@@ -112,7 +112,7 @@
     </div>
 
     <div class="content">
-        <h2>Работники, закрепленные за конкретной работой</h2>
+        <h2>Сотрудники компании</h2>
 
         <form action="/auth/logout.php" method="post" style="display:inline;">
             <button type="submit" class="logout-button">Выход</button>
@@ -120,11 +120,8 @@
 
         <!-- Кнопки для внесения и извлечения данных -->
         <div class="action-buttons">
-            <button onclick="alert('Внесение данных...')">Ввести</button>
-            <button onclick="alert('Извлечение данных...')">Прочитать</button>
-            <button onclick="alert('Извлечение данных...')">Обновить</button>
-            <button onclick="alert('Извлечение данных...')">Создать</button>
-            <button onclick="alert('Извлечение данных...')">Удалить</button>
+            <button onclick="alert('Извлечение данных...')">Пригласить</button>
+            <button onclick="alert('Извлечение данных...')">Уволить</button>
         </div>
 
         <table>
