@@ -102,112 +102,20 @@
 
     <div class="sidebar">
         <h3>Администратор</h3>
-        <button onclick="alert('Открытие таблицы Заказы...')">Заказы</button>
-        <button onclick="alert('Открытие таблицы Документы...')">Документы</button>
-        <button onclick="alert('Открытие таблицы Устройства...')">Устройства</button>
-        <button onclick="alert('Открытие таблицы Операции...')">Операции</button>
-        <button onclick="alert('Открытие таблицы Работники...')">Работники</button>
-        <button onclick="alert('Открытие таблицы Компоненты...')">Компоненты</button>
-        <button onclick="alert('Открытие таблицы Расходные материалы...')">Расходные материалы</button>
+        <a href="/adm_int/orders/show.php"><button>Заказы</button></a>
+        <a href="/adm_int/docs/show.php"><button>Документы</button></a>
+        <a href="/adm_int/devices/show.php"><button>Устройства</button></a>
+        <a href="/adm_int/issue/show.php"><button>Операции</button></a>
+        <a href="/adm_int/users/show.php"><button>Работники</button></a>
+        <a href="/adm_int/detali/show.php"><button>Компоненты</button></a>
+        <a href="/adm_int/raws/show.php"><button>Расходные материалы</button></a>
     </div>
 
     <div class="content">
-        <h2>Сотрудники компании</h2>
-
+        <h2>АСУ изготовления радиопередатчика. АДМИНИСТРАТОР</h2>
         <form action="/auth/logout.php" method="post" style="display:inline;">
             <button type="submit" class="logout-button">Выход</button>
         </form>
-
-        <!-- Кнопки для внесения и извлечения данных -->
-        <div class="action-buttons">
-            <button onclick="alert('Извлечение данных...')">Пригласить</button>
-            <button onclick="alert('Извлечение данных...')">Уволить</button>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Должность</th>
-                    <th>Телефон</th>
-                    <th>Идентификатор работы</th>
-                    <th>Контакт</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Иванов</td>
-                    <td>Иван</td>
-                    <td>Иванович</td>
-                    <td>Менеджер</td>
-                    <td>+7 (999) 123-45-67</td>
-                    <td>001</td>
-                    <td>ivanov@example.com</td>
-                </tr>
-                <tr>
-                    <td>Петров</td>
-                    <td>Петр</td>
-                    <td>Петрович</td>
-                    <td>Инженер</td>
-                    <td>+7 (999) 234-56-78</td>
-                    <td>002</td>
-                    <td>petrov@example.com</td>
-                </tr>
-                <tr>
-                    <td>Сидоров</td>
-                    <td>Сидор</td>
-                    <td>Сидорович</td>
-                    <td>Техник</td>
-                    <td>+7 (999) 345-67-89</td>
-                    <td>003</td>
-                    <td>sidorov@example.com</td>
-                </tr>
-                <tr>
-                    <td>Сергеев</td>
-                    <td>Сергей</td>
-                    <td>Сергеевич</td>
-                    <td>Монтажник</td>
-                    <td>+7 (999) 345-67-89</td>
-                    <td>004</td>
-                    <td>sergeev@example.com</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- CSS для чередующихся строк -->
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            /* Чередующиеся строки таблицы */
-            tbody tr:nth-child(even) {
-                background-color: #c5c0c0;
-                /* Светло-серый для четных строк */
-            }
-
-            tbody tr:nth-child(odd) {
-                background-color: #ffffff;
-                /* Белый для нечетных строк */
-            }
-        </style>
-
     </div>
 
 </body>

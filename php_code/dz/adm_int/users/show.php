@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АСУ изготовления радиопередатчика - Главная страница</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,19 +95,84 @@
             background-color: #c82333; /* Темнее при наведении */
         }
     </style>
+
+    <title>Добавить сотрудника</title>
+    <style>
+        /* Стили для модального окна */
+        .modal {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px; /* Ширина модального окна */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Стили для формы */
+        form {
+            display: flex;
+            flex-direction: column; /* Элементы в столбик */
+        }
+
+        input[type="text"], input[type="submit"] {
+            margin-bottom: 10px; /* Отступ между полями */
+            padding: 10px; /* Внутренний отступ */
+            border: 1px solid #ccc; /* Рамка */
+            border-radius: 4px; /* Закругленные углы */
+            font-size: 14px; /* Размер шрифта */
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50; /* Цвет кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none; /* Убираем рамку */
+            cursor: pointer; /* Указатель при наведении */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Цвет кнопки при наведении */
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="sidebar">
         <h3>Администратор</h3>
-        <button onclick="alert('Открытие таблицы Заказы...')">Заказы</button>
-        <button onclick="alert('Открытие таблицы Документы...')">Документы</button>
-        <button onclick="alert('Открытие таблицы Устройства...')">Устройства</button>
-        <button onclick="alert('Открытие таблицы Операции...')">Операции</button>
-        <button onclick="alert('Открытие таблицы Работники...')">Работники</button>
-        <button onclick="alert('Открытие таблицы Компоненты...')">Компоненты</button>
-        <button onclick="alert('Открытие таблицы Расходные материалы...')">Расходные материалы</button>
+        <a href="/adm_int/orders/show.php"><button>Заказы</button></a>
+        <a href="/adm_int/docs/show.php"><button>Документы</button></a>
+        <a href="/adm_int/devices/show.php"><button>Устройства</button></a>
+        <a href="/adm_int/issue/show.php"><button>Операции</button></a>
+        <a href="/adm_int/users/show.php"><button>Работники</button></a>
+        <a href="/adm_int/detali/show.php"><button>Компоненты</button></a>
+        <a href="/adm_int/raws/show.php"><button>Расходные материалы</button></a>
     </div>
 
     <div class="content">
@@ -120,9 +184,47 @@
 
         <!-- Кнопки для внесения и извлечения данных -->
         <div class="action-buttons">
-            <button onclick="alert('Извлечение данных...')">Пригласить</button>
+            <button onclick="openModal()">Пригласить</button>
             <button onclick="alert('Извлечение данных...')">Уволить</button>
         </div>
+        <!-- Модальное окно -->
+        <div id="employeeModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Добавить сотрудника</h2>
+                <form action="add.php" method="post">
+                    <input type="text" id="jobtype" name="jobtype" placeholder="Идентфиикатор работы" required>
+                    <input type="text" id="firstname" name="firstname" placeholder="Имя" required>
+                    <input type="text" id="secondname" name="secondname" placeholder="Фамилия" required>
+                    <input type="text" id="thirdname" name="thirdname" placeholder="Отчество">
+                    <input type="text" id="post" name="post" placeholder="Должность" required>
+                    <input type="text" id="login" name="login" placeholder="Логин">
+                    <input type="text" id="password" name="password" placeholder="Пароль" required>
+                    <input type="submit" value="Добавить">
+                </form>
+            </div>
+        </div>
+
+        <script>
+        // Функция для открытия модального окна
+        function openModal() {
+            document.getElementById("employeeModal").style.display = "block";
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            document.getElementById("employeeModal").style.display = "none";
+        }
+
+        // Закрываем модальное окно при клике вне его
+        window.onclick = (event) => {
+            const modal = document.getElementById("employeeModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        </script>
+
 
         <?php
 
