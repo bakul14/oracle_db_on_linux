@@ -7,16 +7,16 @@ $db_shema_login = 'MISHA';
 $db_shema_pass = 'MISHA';
 $db_sid = 'FREE';
 
-$admin_login = 'MISHA';
-$admin_password = 'MISHA';
+$admin_login = 'admin';
+$admin_password = 'admin';
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input_username = $_POST['username'];
+    $input_login = $_POST['login'];
     $input_password = $_POST['password'];
 
-    if ($input_username === $admin_login && $input_password === $admin_password) {
-        $_SESSION['username'] = $input_username;
+    if ($input_login === $admin_login && $input_password === $admin_password) {
+        $_SESSION['login'] = $input_login;
         $_SESSION['role'] = 'admin';
         header('Location: /adm_int/index.php');
         exit();
@@ -29,10 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
             // Подготовленный запрос для проверки кредов
-            $sql = "SELECT * FROM users WHERE user_id = :username AND user_ph = :password";
+            $sql = "SELECT * FROM users WHERE user_login = :login AND user_password = :password";
             $stmt = oci_parse($conn, $sql);
 
-            oci_bind_by_name($stmt, ':username', $input_username);
+            oci_bind_by_name($stmt, ':login', $input_login);
             oci_bind_by_name($stmt, ':password', $input_password);
 
             oci_execute($stmt);
@@ -144,8 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2>Авторизация</h2>
         <form action="" method="POST">
             <div class="form-group">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="login">Имя пользователя:</label>
+                <input type="text" id="login" name="login" required>
             </div>
             <div class="form-group">
                 <label for="password">Пароль:</label>
