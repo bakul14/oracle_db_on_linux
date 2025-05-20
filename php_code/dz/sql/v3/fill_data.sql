@@ -7,7 +7,7 @@ SELECT job_id, job_us_id, job_comp_id, job_name
   FROM job;
 SELECT tp_id, tp_job_id, tp_name 
   FROM technology;
-SELECT us_id, us_name, us_secondname, us_thirdname, us_role, us_login, us_pass 
+SELECT us_id, us_name, us_secondname, us_thirdname, us_post, us_role, us_login, us_pass 
   FROM users;
 
 -- INSERT
@@ -52,11 +52,13 @@ INSERT INTO users
   us_name, 
   us_secondname, 
   us_thirdname, 
+  us_post, 
   us_role, 
   us_login, 
   us_pass) 
 VALUES 
   (?, 
+  ?, 
   ?, 
   ?, 
   ?, 
@@ -91,6 +93,7 @@ UPDATE users SET
   us_name = ?, 
   us_secondname = ?, 
   us_thirdname = ?, 
+  us_post = ?, 
   us_role = ?, 
   us_login = ?, 
   us_pass = ? 
@@ -98,7 +101,7 @@ WHERE
   us_id = ?;
 
 -- DELETE
-DDELETE FROM comp 
+DELETE FROM comp 
   WHERE comp_id = ?;
 DELETE FROM device 
   WHERE device_id = ?;
