@@ -7,7 +7,7 @@ SELECT job_id, job_us_id, job_comp_id, job_name
   FROM job;
 SELECT tp_id, tp_job_id, tp_name 
   FROM technology;
-SELECT us_id, us_name, us_secondname, us_thirdname, us_post, us_role, us_login, us_pass 
+SELECT us_id, us_firstname, us_secondname, us_thirdname, us_post, us_role, us_login, us_pass 
   FROM users;
 
 -- INSERT
@@ -49,7 +49,7 @@ VALUES
   ?);
 INSERT INTO users
   (us_id, 
-  us_name, 
+  us_firstname, 
   us_secondname, 
   us_thirdname, 
   us_post, 
@@ -90,7 +90,7 @@ UPDATE technology SET
 WHERE
   tp_id = ?;
 UPDATE users SET 
-  us_name = ?, 
+  us_firstname = ?, 
   us_secondname = ?, 
   us_thirdname = ?, 
   us_post = ?, 

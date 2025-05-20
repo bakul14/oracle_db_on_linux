@@ -28,7 +28,7 @@ CREATE TABLE technology (
   PRIMARY KEY (tp_id));
 CREATE TABLE users (
   us_id         number(10) GENERATED AS IDENTITY CHECK(us_id), 
-  us_name       varchar2(255), 
+  us_firstname  varchar2(255), 
   us_secondname varchar2(255), 
   us_thirdname  varchar2(255), 
   us_post       varchar2(255), 
@@ -36,10 +36,11 @@ CREATE TABLE users (
   us_login      varchar2(255), 
   us_pass       varchar2(255), 
   PRIMARY KEY (us_id));
-
+  
 ALTER TABLE device ADD CONSTRAINT FKdevice458075 FOREIGN KEY (device_tp_id) REFERENCES technology (tp_id);
 ALTER TABLE job ADD CONSTRAINT FKjob30989 FOREIGN KEY (job_comp_id) REFERENCES comp (comp_id);
 ALTER TABLE job ADD CONSTRAINT FKjob421852 FOREIGN KEY (job_us_id) REFERENCES users (us_id);
 ALTER TABLE technology ADD CONSTRAINT FKtechnology656379 FOREIGN KEY (tp_job_id) REFERENCES job (job_id);
+
 
 exit

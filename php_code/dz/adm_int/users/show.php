@@ -193,11 +193,11 @@
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Добавить сотрудника</h2>
                 <form action="add.php" method="post">
-                    <input type="text" id="jobtype" name="jobtype" placeholder="Идентфиикатор работы" required>
                     <input type="text" id="firstname" name="firstname" placeholder="Имя" required>
                     <input type="text" id="secondname" name="secondname" placeholder="Фамилия" required>
                     <input type="text" id="thirdname" name="thirdname" placeholder="Отчество">
                     <input type="text" id="post" name="post" placeholder="Должность" required>
+                    <input type="text" id="role" name="role" placeholder="Роль" required>
                     <input type="text" id="login" name="login" placeholder="Логин">
                     <input type="text" id="password" name="password" placeholder="Пароль" required>
                     <input type="submit" value="Добавить">
@@ -227,40 +227,33 @@
 
 
         <?php
-
+        require_once $_SERVER['DOCUMENT_ROOT'] . 'common.php';
         try {
-            $db_shema_login = 'MISHA';
-            $db_shema_pass = 'MISHA';
-            $db_sid = 'FREE';
-            $ip = dns_get_record('sql_server.g', DNS_A)[0]['ip'];
-            $db = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=$ip)(PORT=1521))(CONNECT_DATA=(SID=$db_sid)))";
             $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
             if (!$conn) {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
-            // SQL-запрос для получения данных
-            $sql = "SELECT user_job_id, user_firstname, user_secondname, user_thirdname, user_post FROM users";
+            // SQL-запрос для получения данны
+            $sql = "SELECT us_id, us_name, us_secondname, user_thirdname, us_post, us_role FROM users";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
 
-
             echo "<table border='1'>
                 <tr>
-                    <th>Работа</th>
                     <th>Имя</th>
                     <th>Фамилия</th>
                     <th>Отчество</th>
                     <th>Должность</th>
+                    <th>Роль</th>
                 </tr>";
 
-        // Вывод данных в таблицу
         while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
             echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['USER_JOB_ID']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['USER_FIRSTNAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['USER_SECONDNAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['USER_THIRDNAME']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['US_FIRSTNAME']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['US_SECONDNAME']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['US_THIRDNAME']) . "</td>";
             echo "<td>" . htmlspecialchars($row['USER_POST']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['USER_ROLE']) . "</td>";
             echo "</tr>";
         }
 
