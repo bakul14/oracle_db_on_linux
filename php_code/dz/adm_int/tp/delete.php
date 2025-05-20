@@ -16,7 +16,7 @@ try {
     }
 
     // Приводим ID к числу
-    $comp_id = (int) $_POST['id'];
+    $tp_id = (int) $_POST['id'];
 
     // Подключаемся к БД
     $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
@@ -24,20 +24,20 @@ try {
         throw new Exception('Ошибка подключения: ' . oci_error()['message']);
     }
 
-    // Проверяем существование компонента
-    $check_sql = "SELECT 1 FROM comp WHERE comp_id = :comp_id";
+    // Проверяем существование тп
+    $check_sql = "SELECT 1 FROM technology WHERE tp_id = :tp_id";
     $check_stmt = oci_parse($conn, $check_sql);
-    oci_bind_by_name($check_stmt, ':comp_id', $comp_id);
+    oci_bind_by_name($check_stmt, ':tp_id', $tp_id);
     oci_execute($check_stmt);
 
     if (!oci_fetch($check_stmt)) {
-        throw new Exception("Компонент с ID $comp_id не найден");
+        throw new Exception("ТП с ID $tp_id не найден");
     }
 
-    // Удаляем компонент
-    $sql = "DELETE FROM comp WHERE comp_id = :comp_id";
+    // Удаляем ктп
+    $sql = "DELETE FROM technology WHERE tp_id = :tp_id";
     $stmt = oci_parse($conn, $sql);
-    oci_bind_by_name($stmt, ':comp_id', $comp_id);
+    oci_bind_by_name($stmt, ':tp_id', $tp_id);
 
     if (!oci_execute($stmt)) {
         $e = oci_error($stmt);

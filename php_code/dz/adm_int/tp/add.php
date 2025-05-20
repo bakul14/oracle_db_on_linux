@@ -18,12 +18,11 @@ try {
         throw new Exception('Ошибка подключения: ' . oci_error()['message']);
     }
 
-    if (empty($_POST['name']) || empty($_POST['value']) || empty($_POST['device_id'])) {
+    if (empty($_POST['name']) || empty($_POST['device_id'])) {
         throw new Exception('Все поля обязательны');
     }
 
     $name = trim($_POST['name']);
-    $value = trim($_POST['value']);
     $device_id = (int) $_POST['device_id'];
 
     $check_sql = "SELECT 1 FROM device WHERE device_id = :device_id";
@@ -35,12 +34,11 @@ try {
         throw new Exception("Устройство не найдено");
     }
 
-    $sql = "INSERT INTO comp (comp_name, comp_value, comp_device_id) 
-            VALUES (:name, :value, :device_id)";
+    $sql = "INSERT INTO technology (tp_device_id, tp_name) 
+            VALUES (:device_id, :name)";
     $stmt = oci_parse($conn, $sql);
-    oci_bind_by_name($stmt, ':name', $name);
-    oci_bind_by_name($stmt, ':value', $value);
     oci_bind_by_name($stmt, ':device_id', $device_id);
+    oci_bind_by_name($stmt, ':name', $name);
 
     if (!oci_execute($stmt)) {
         $e = oci_error($stmt);

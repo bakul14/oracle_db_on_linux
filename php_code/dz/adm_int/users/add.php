@@ -36,7 +36,7 @@ if (oci_execute($stmt)) {
     $e = oci_error($stmt);
     echo "Ошибка добавления сотрудника: " . $e['message'];
 }
-
+ob_end_clean();
 // Освобождение ресурсов
 oci_free_statement($stmt);
 oci_close($conn);
