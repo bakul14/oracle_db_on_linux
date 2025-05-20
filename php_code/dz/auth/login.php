@@ -7,15 +7,15 @@ $db_shema_login = 'MISHA';
 $db_shema_pass = 'MISHA';
 $db_sid = 'FREE';
 
-$admin_login = 'admin';
-$admin_password = 'admin';
+$service_login = 'service';
+$service_password = 'service';
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input_login = $_POST['login'];
     $input_password = $_POST['password'];
 
-    if ($input_login === $admin_login && $input_password === $admin_password) {
+    if ($input_login === $service_login && $input_password === $service_password) {
         $_SESSION['login'] = $input_login;
         $_SESSION['role'] = 'admin';
         header('Location: /adm_int/index.php');
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
             // Подготовленный запрос для проверки кредов
-            $sql = "SELECT * FROM users WHERE user_login = :login AND user_password = :password";
+            $sql = "SELECT * FROM users WHERE us_login = :login AND us_pass = :password";
             $stmt = oci_parse($conn, $sql);
 
             oci_bind_by_name($stmt, ':login', $input_login);

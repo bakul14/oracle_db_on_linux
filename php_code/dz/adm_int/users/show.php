@@ -184,11 +184,11 @@
 
         <!-- Кнопки для внесения и извлечения данных -->
         <div class="action-buttons">
-            <button onclick="openModal()">Пригласить</button>
-            <button onclick="alert('Извлечение данных...')">Уволить</button>
+            <button onclick="modalAddUser()">Пригласить</button>
+            <button onclick="modalDeleteUser()">Уволить</button>
         </div>
-        <!-- Модальное окно -->
-        <div id="employeeModal" class="modal">
+        <!-- Модальное окно для добавления сотрудника-->
+        <div id="modalAddUser" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Добавить сотрудника</h2>
@@ -204,42 +204,47 @@
                 </form>
             </div>
         </div>
+        <!-- Модальное окно для добавления сотрудника-->
+        <div id="modalDeleteUser" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Удалить сотрудника</h2>
+                <form action="delete.php" method="post">
+                    <input type="text" id="id" name="id" placeholder="Идентификатор сотрудника" required>
+                    <input type="submit" value="Удалить">
+                </form>
+            </div>
+        </div>
 
         <script>
-        // Функция для открытия модального окна
-        function openModal() {
-            document.getElementById("employeeModal").style.display = "block";
+        function modalAddUser() {
+            document.getElementById("modalAddUser").style.display = "block";
         }
-
-        // Функция для закрытия модального окна
+        function modalDeleteUser() {
+            document.getElementById("modalDeleteUser").style.display = "block";
+        }
         function closeModal() {
-            document.getElementById("employeeModal").style.display = "none";
-        }
-
-        // Закрываем модальное окно при клике вне его
-        window.onclick = (event) => {
-            const modal = document.getElementById("employeeModal");
-            if (event.target === modal) {
-                closeModal();
-            }
+            document.getElementById("modalAddUser").style.display = "none";
+            document.getElementById("modalDeleteUser").style.display = "none";
         }
         </script>
 
 
         <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . 'common.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
         try {
             $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
             if (!$conn) {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
             // SQL-запрос для получения данны
-            $sql = "SELECT us_id, us_name, us_secondname, user_thirdname, us_post, us_role FROM users";
+            $sql = "SELECT us_id, us_firstname, us_secondname, us_thirdname, us_post, us_role FROM users";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
 
             echo "<table border='1'>
                 <tr>
+                    <th>ID</th>
                     <th>Имя</th>
                     <th>Фамилия</th>
                     <th>Отчество</th>
@@ -249,11 +254,12 @@
 
         while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
             echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['US_ID']) . "</td>";
             echo "<td>" . htmlspecialchars($row['US_FIRSTNAME']) . "</td>";
             echo "<td>" . htmlspecialchars($row['US_SECONDNAME']) . "</td>";
             echo "<td>" . htmlspecialchars($row['US_THIRDNAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['USER_POST']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['USER_ROLE']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['US_POST']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['US_ROLE']) . "</td>";
             echo "</tr>";
         }
 
