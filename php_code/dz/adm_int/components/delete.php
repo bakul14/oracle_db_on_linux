@@ -9,7 +9,7 @@ if (!$conn) {
 // Получение данных из формы
 $comp_id = $_POST['id'];
 
-// SQL-запрос для добавления сотрудника
+// SQL-запрос для удаления компонента
 $sql = "DELETE FROM comp WHERE comp_id=:comp_id";
 $stmt = oci_parse($conn, $sql);
 

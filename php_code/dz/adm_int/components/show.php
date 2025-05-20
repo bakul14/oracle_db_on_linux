@@ -191,13 +191,43 @@
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Добавить компонент</h2>
                 <form action="add.php" method="post">
-                    <input type="text" id="name" name="name" placeholder="Наименование, например, конденсатор электролитический" required>
-                    <input type="text" id="value" name="value" placeholder="Номинал, например, 10 uF 50 V" required>
+                    <!-- Добавлен выпадающий список -->
+                    <select id="device_id" name="device_id" required style="margin-bottom: 10px; padding: 10px;">
+                        <option value="">Выберите устройство</option>
+                        <?php
+                        require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
+                        try {
+                            $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
+                            if (!$conn) {
+                                throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
+                            }
+                            
+                            $sql = "SELECT device_id, device_name FROM device ORDER BY device_name";
+                            $stmt = oci_parse($conn, $sql);
+                            oci_execute($stmt);
+
+                            while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                                echo '<option value="' . $row['DEVICE_ID'] . '">' 
+                                     . htmlspecialchars($row['DEVICE_NAME']) . '</option>';
+                            }
+                            
+                            oci_free_statement($stmt);
+                            oci_close($conn);
+                            
+                        } catch (Exception $e) {
+                            echo "<!-- Error details: " . htmlspecialchars($e->getMessage()) . " -->";
+                            echo '<option value="">Ошибка загрузки: ' . htmlspecialchars($e->getMessage()) . '</option>';
+                        }
+                        ?>
+                    </select>
+
+                    <input type="text" id="name" name="name" placeholder="Наименование..." required>
+                    <input type="text" id="value" name="value" placeholder="Номинал..." required>
                     <input type="submit" value="Добавить">
                 </form>
             </div>
         </div>
-        <!-- Модальное окно для добавления компонента-->
+        <!-- Модальное окно для удаления компонента-->
         <div id="modalDeleteComponent" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
@@ -239,12 +269,13 @@
                     <th>ID</th>
                     <th>Наименование</th>
                     <th>Номинал</th>
+                    <th>Для чего</th>
                 </tr>";
 
-        while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['COMP_ID']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['COMP_NAME']) . "</td>";
+            while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($row['COMP_ID']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['COMP_NAME']) . "</td>";
             echo "<td>" . htmlspecialchars($row['COMP_VALUE']) . "</td>";
             echo "</tr>";
         }

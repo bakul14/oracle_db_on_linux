@@ -11,12 +11,13 @@ $input_name = $_POST['name'];
 $input_value = $_POST['value'];
 
 // SQL-запрос для добавления сотрудника
-$sql = "INSERT INTO comp (comp_name, comp_value) VALUES (:input_name, :input_value)";
+$sql = "INSERT INTO comp (comp_name, comp_value, comp_device_id) VALUES (:input_name, :input_value, :input_device_id)";
 $stmt = oci_parse($conn, $sql);
 
 // Привязка параметров
 oci_bind_by_name($stmt, ':input_name', $input_name);
 oci_bind_by_name($stmt, ':input_value', $input_value);
+oci_bind_by_name($stmt, ':input_device_id', $input_device_id);
 
 // Выполнение запроса
 if (oci_execute($stmt)) {
