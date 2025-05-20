@@ -9,6 +9,7 @@ if (!$conn) {
 // Получение данных из формы
 $input_name = $_POST['name'];
 $input_value = $_POST['value'];
+$input_device_id = $_POST['device_id'];
 
 // SQL-запрос для добавления сотрудника
 $sql = "INSERT INTO comp (comp_name, comp_value, comp_device_id) VALUES (:input_name, :input_value, :input_device_id)";
