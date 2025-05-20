@@ -259,29 +259,36 @@
             if (!$conn) {
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
-            // SQL-запрос для получения компонентов
-            $sql = "SELECT comp_id, comp_name, comp_value FROM comp ORDER BY comp_id DESC";
+            
+            // Модифицированный SQL-запрос с JOIN
+            $sql = "SELECT c.comp_id, 
+                        c.comp_name, 
+                        c.comp_value, 
+                        d.device_name 
+                    FROM comp c
+                    JOIN device d ON c.comp_device_id = d.device_id
+                    ORDER BY c.comp_id DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
 
             echo "<table border='1'>
-                <tr>
-                    <th>ID</th>
-                    <th>Наименование</th>
-                    <th>Номинал</th>
-                    <th>Для чего</th>
-                </tr>";
+                    <tr>
+                        <th>ID</th>
+                        <th>Наименование</th>
+                        <th>Номинал</th>
+                        <th>Для чего</th>
+                    </tr>";
 
             while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['COMP_ID']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['COMP_NAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['COMP_VALUE']) . "</td>";
-            echo "</tr>";
-        }
+                echo "<td>" . htmlspecialchars($row['COMP_VALUE']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['DEVICE_NAME']) . "</td>";
+                echo "</tr>";
+            }
 
-        // Закрытие таблицы
-        echo "</table>";
+            echo "</table>";
 
             oci_free_statement($stmt);
             oci_close($conn);
