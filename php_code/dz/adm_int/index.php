@@ -102,13 +102,11 @@
 
     <div class="sidebar">
         <h3>Администратор</h3>
-        <a href="/adm_int/orders/show.php"><button>Заказы</button></a>
-        <a href="/adm_int/docs/show.php"><button>Документы</button></a>
+        <a href="/adm_int/components/show.php"><button>Компоненты</button></a>
         <a href="/adm_int/devices/show.php"><button>Устройства</button></a>
-        <a href="/adm_int/issue/show.php"><button>Операции</button></a>
-        <a href="/adm_int/users/show.php"><button>Работники</button></a>
-        <a href="/adm_int/detali/show.php"><button>Компоненты</button></a>
-        <a href="/adm_int/raws/show.php"><button>Расходные материалы</button></a>
+        <a href="/adm_int/jobs/show.php"><button>Операции</button></a>
+        <a href="/adm_int/tp/show.php"><button>Техпроцесс</button></a>
+        <a href="/adm_int/users/show.php"><button>Пользователи</button></a>
     </div>
 
     <div class="content">

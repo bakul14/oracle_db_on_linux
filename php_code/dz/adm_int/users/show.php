@@ -166,13 +166,11 @@
 
     <div class="sidebar">
         <h3>Администратор</h3>
-        <a href="/adm_int/orders/show.php"><button>Заказы</button></a>
-        <a href="/adm_int/docs/show.php"><button>Документы</button></a>
+        <a href="/adm_int/components/show.php"><button>Компоненты</button></a>
         <a href="/adm_int/devices/show.php"><button>Устройства</button></a>
-        <a href="/adm_int/issue/show.php"><button>Операции</button></a>
-        <a href="/adm_int/users/show.php"><button>Работники</button></a>
-        <a href="/adm_int/detali/show.php"><button>Компоненты</button></a>
-        <a href="/adm_int/raws/show.php"><button>Расходные материалы</button></a>
+        <a href="/adm_int/jobs/show.php"><button>Операции</button></a>
+        <a href="/adm_int/tp/show.php"><button>Техпроцесс</button></a>
+        <a href="/adm_int/users/show.php"><button>Пользователи</button></a>
     </div>
 
     <div class="content">
@@ -238,7 +236,7 @@
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
             // SQL-запрос для получения данны
-            $sql = "SELECT us_id, us_firstname, us_secondname, us_thirdname, us_post, us_role FROM users";
+            $sql = "SELECT us_id, us_firstname, us_secondname, us_thirdname, us_post, us_role FROM users ORDER BY us_id DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
 
