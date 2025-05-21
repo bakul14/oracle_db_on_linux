@@ -10,7 +10,7 @@
             background-color: #f4f4f4;
             margin: 0;
             display: flex;
-            position: relative; /* Позволяет позиционировать элементы внутри body */
+            position: relative;
         }
 
         .sidebar {
@@ -78,13 +78,12 @@
             background-color: #218838;
         }
 
-        /* Стили для кнопки "Выход" */
         .logout-button {
-            position: absolute; /* Позиционирование относительно родителя */
-            top: 20px; /* Отступ сверху */
-            right: 20px; /* Отступ справа */
+            position: absolute;
+            top: 20px;
+            right: 20px;
             padding: 10px 15px;
-            background-color: #dc3545; /* Красный цвет */
+            background-color: #dc3545;
             color: white;
             border: none;
             border-radius: 3px;
@@ -92,33 +91,28 @@
         }
 
         .logout-button:hover {
-            background-color: #c82333; /* Темнее при наведении */
+            background-color: #c82333;
         }
-    </style>
 
-    <title>Добавить ТП</title>
-    <style>
-        /* Стили для модального окна */
         .modal {
-            display: none; /* Скрыто по умолчанию */
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 10% auto; 
+            margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 500px; /* Ширина модального окна */
-            border-radius: 5px; /* Закругленные углы */
+            width: 500px;
+            border-radius: 5px;
         }
 
         .close {
@@ -135,35 +129,37 @@
             cursor: pointer;
         }
 
-        /* Стили для формы */
-        form {
-            display: flex;
-            flex-direction: column; /* Элементы в столбик */
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        input[type="text"], input[type="submit"] {
-            margin-bottom: 10px; /* Отступ между полями */
-            padding: 10px; /* Внутренний отступ */
-            border: 1px solid #ccc; /* Рамка */
-            border-radius: 4px; /* Закругленные углы */
-            font-size: 14px; /* Размер шрифта */
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50; /* Цвет кнопки */
-            color: white; /* Цвет текста кнопки */
-            border: none; /* Убираем рамку */
-            cursor: pointer; /* Указатель при наведении */
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Цвет кнопки при наведении */
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
     </style>
+
+    <title>Техпроцессы</title>
 </head>
 
 <body>
-
     <div class="sidebar">
         <h3>Администратор</h3>
         <a href="/adm_int/components/show.php"><button>Компоненты</button></a>
@@ -183,15 +179,16 @@
         <div class="action-buttons">
             <button onclick="modalAddTp()">Добавить техпроцесс</button>
             <button onclick="modalDeleteTp()">Удалить техпроцесс</button>
+            <button onclick="modalExportTp()">Экспорт техпроцесса</button>
         </div>
-        <!-- Модальное окно для добавления тп-->
+
+        <!-- Модальное окно добавления -->
         <div id="modalAddTp" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Добавить техпроцесс</h2>
                 <form action="add.php" method="post">
-                    <!-- Добавлен выпадающий список -->
-                    <select id="device_id" name="device_id" required style="margin-bottom: 10px; padding: 10px;">
+                    <select id="device_id" name="device_id" required>
                         <option value="">Выберите устройство</option>
                         <?php
                         require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
@@ -214,40 +211,66 @@
                             oci_close($conn);
                             
                         } catch (Exception $e) {
-                            echo "<!-- Error details: " . htmlspecialchars($e->getMessage()) . " -->";
                             echo '<option value="">Ошибка загрузки: ' . htmlspecialchars($e->getMessage()) . '</option>';
                         }
                         ?>
                     </select>
 
                     <input type="text" id="name" name="name" placeholder="Наименование техпроцесса" required>
-                    <input type="submit" value="Добавить">
+                    <input type="submit" value="Добавить" class="btn-primary">
                 </form>
             </div>
         </div>
-        <!-- Модальное окно для удаления тп-->
+
+        <!-- Модальное окно удаления -->
         <div id="modalDeleteTp" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Удалить техпроцесс</h2>
                 <form action="delete.php" method="post">
                     <input type="text" id="id" name="id" placeholder="Идентификатор техпроцесса" required>
-                    <input type="submit" value="Удалить">
+                    <input type="submit" value="Удалить" class="btn-primary">
+                </form>
+            </div>
+        </div>
+
+        <!-- Модальное окно экспорта -->
+        <div id="modalExportTp" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Экспорт техпроцесса</h2>
+                <form action="export.php" method="post" target="_blank">
+                    <input type="number" name="tp_id" required 
+                           placeholder="Введите ID техпроцесса">
+                    <input type="submit" value="Экспорт в PDF" class="btn-primary">
                 </form>
             </div>
         </div>
 
         <script>
-        function modalAddTp() {
-            document.getElementById("modalAddTp").style.display = "block";
-        }
-        function modalDeleteTp() {
-            document.getElementById("modalDeleteTp").style.display = "block";
-        }
-        function closeModal() {
-            document.getElementById("modalAddTp").style.display = "none";
-            document.getElementById("modalDeleteTp").style.display = "none";
-        }
+            function modalAddTp() {
+                document.getElementById("modalAddTp").style.display = "block";
+            }
+
+            function modalDeleteTp() {
+                document.getElementById("modalDeleteTp").style.display = "block";
+            }
+
+            function modalExportTp() {
+                document.getElementById("modalExportTp").style.display = "block";
+            }
+
+            function closeModal() {
+                document.getElementById("modalAddTp").style.display = "none";
+                document.getElementById("modalDeleteTp").style.display = "none";
+                document.getElementById("modalExportTp").style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target.className === 'modal') {
+                    event.target.style.display = "none";
+                }
+            }
         </script>
 
         <?php
@@ -258,17 +281,16 @@
                 throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
             }
             
-            // Модифицированный SQL-запрос с JOIN
             $sql = "SELECT t.tp_id, 
-                        t.tp_name,
-                        d.device_name 
-                    FROM technology t
-                    JOIN device d ON t.tp_device_id = d.device_id
-                    ORDER BY t.tp_id DESC";
+                            t.tp_name,
+                            d.device_name 
+                     FROM technology t
+                     JOIN device d ON t.tp_device_id = d.device_id
+                     ORDER BY t.tp_id DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt);
 
-            echo "<table border='1'>
+            echo "<table>
                     <tr>
                         <th>ID</th>
                         <th>Наименование</th>
@@ -289,45 +311,9 @@
             oci_close($conn);
 
         } catch (Exception $e) {
-            echo 'Ошибка: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8') . '<br>';
-            exit();
+            echo '<div style="color: red;">Ошибка: ' . htmlspecialchars($e->getMessage()) . '</div>';
         }
         ?>
-
-        <!-- CSS для чередующихся строк -->
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            /* Чередующиеся строки таблицы */
-            tbody tr:nth-child(even) {
-                background-color: #c5c0c0;
-                /* Светло-серый для четных строк */
-            }
-
-            tbody tr:nth-child(odd) {
-                background-color: #ffffff;
-                /* Белый для нечетных строк */
-            }
-        </style>
-
     </div>
-
 </body>
-
 </html>
