@@ -221,8 +221,8 @@
                         ?>
                     </select>
 
-                    <input type="text" id="name" name="name" placeholder="Наименование..." required>
-                    <input type="text" id="value" name="value" placeholder="Номинал..." required>
+                    <input type="text" id="name" name="name" placeholder="Наименование, например, конденсатор электролитичский" required>
+                    <input type="text" id="value" name="value" placeholder="Номинал, например, 10 uF 50 V" required>
                     <input type="submit" value="Добавить">
                 </form>
             </div>
