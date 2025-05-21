@@ -36,6 +36,7 @@ CREATE TABLE users (
   us_login      varchar2(255), 
   us_pass       varchar2(255), 
   PRIMARY KEY (us_id));
+  
 ALTER TABLE technology ADD CONSTRAINT FKtechnology374904 FOREIGN KEY (tp_device_id) REFERENCES device (device_id);
 ALTER TABLE comp ADD CONSTRAINT FKcomp227789 FOREIGN KEY (comp_device_id) REFERENCES device (device_id);
 ALTER TABLE job ADD CONSTRAINT FKjob30989 FOREIGN KEY (job_comp_id) REFERENCES comp (comp_id);
