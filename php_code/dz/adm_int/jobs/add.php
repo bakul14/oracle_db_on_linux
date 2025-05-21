@@ -6,10 +6,6 @@ if (!$conn) {
     throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
 }
 
-// Получение данных из формы
-// $input_name = $_POST['name'];
-// $input_value = $_POST['value'];
-
 // SQL-запрос для добавления задачи
 $sql = "INSERT INTO job (job_comp_id, job_tech_id, job_us_id, job_name)
           VALUES (:job_comp_id, :job_tech_id, :job_us_id, :job_name)";

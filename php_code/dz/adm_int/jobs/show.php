@@ -199,14 +199,17 @@
         <?php
         if ($conn && $selected_device) {
             try {
-                $sql = "SELECT j.job_id, c.comp_name, t.tp_name, 
+            $sql = "SELECT j.job_id, 
+                        j.job_name,
+                        c.comp_name || ' ' || c.comp_value as component_info,
+                        t.tp_name, 
                         u.us_firstname||' '||u.us_secondname as user_name
-                        FROM job j
-                        JOIN comp c ON j.job_comp_id = c.comp_id
-                        JOIN technology t ON j.job_tech_id = t.tp_id
-                        JOIN users u ON j.job_us_id = u.us_id
-                        WHERE c.comp_device_id = :device_id
-                        ORDER BY j.job_id DESC";
+                    FROM job j
+                    JOIN comp c ON j.job_comp_id = c.comp_id
+                    JOIN technology t ON j.job_tech_id = t.tp_id
+                    JOIN users u ON j.job_us_id = u.us_id
+                    WHERE c.comp_device_id = :device_id
+                    ORDER BY j.job_id DESC";
 
                 $stmt = oci_parse($conn, $sql);
                 oci_bind_by_name($stmt, ':device_id', $selected_device);
@@ -215,6 +218,7 @@
                 echo "<table>
                         <tr>
                             <th>ID</th>
+                            <th>Название операции</th>
                             <th>Компонент</th>
                             <th>Техпроцесс</th>
                             <th>Ответственный</th>
@@ -223,10 +227,11 @@
                 while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
                     echo "<tr>
                             <td>" . htmlspecialchars($row['JOB_ID']) . "</td>
-                            <td>" . htmlspecialchars($row['COMP_NAME']) . "</td>
+                            <td>" . htmlspecialchars($row['JOB_NAME']) . "</td>
+                            <td>" . htmlspecialchars($row['COMPONENT_INFO']) . "</td>
                             <td>" . htmlspecialchars($row['TP_NAME']) . "</td>
                             <td>" . htmlspecialchars($row['USER_NAME']) . "</td>
-                          </tr>";
+                        </tr>";
                 }
                 echo "</table>";
 
