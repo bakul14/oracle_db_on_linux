@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Операции</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             display: flex;
-            position: relative; /* Позволяет позиционировать элементы внутри body */
+            position: relative;
         }
 
         .sidebar {
@@ -78,13 +79,12 @@
             background-color: #218838;
         }
 
-        /* Стили для кнопки "Выход" */
         .logout-button {
-            position: absolute; /* Позиционирование относительно родителя */
-            top: 20px; /* Отступ сверху */
-            right: 20px; /* Отступ справа */
+            position: absolute;
+            top: 20px;
+            right: 20px;
             padding: 10px 15px;
-            background-color: #dc3545; /* Красный цвет */
+            background-color: #dc3545;
             color: white;
             border: none;
             border-radius: 3px;
@@ -92,33 +92,28 @@
         }
 
         .logout-button:hover {
-            background-color: #c82333; /* Темнее при наведении */
+            background-color: #c82333;
         }
-    </style>
 
-    <title>Добавить операцию</title>
-    <style>
-        /* Стили для модального окна */
         .modal {
-            display: none; /* Скрыто по умолчанию */
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 10% auto; 
+            margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 500px; /* Ширина модального окна */
-            border-radius: 5px; /* Закругленные углы */
+            width: 500px;
+            border-radius: 5px;
         }
 
         .close {
@@ -135,35 +130,21 @@
             cursor: pointer;
         }
 
-        /* Стили для формы */
-        form {
-            display: flex;
-            flex-direction: column; /* Элементы в столбик */
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        input[type="text"], input[type="submit"] {
-            margin-bottom: 10px; /* Отступ между полями */
-            padding: 10px; /* Внутренний отступ */
-            border: 1px solid #ccc; /* Рамка */
-            border-radius: 4px; /* Закругленные углы */
-            font-size: 14px; /* Размер шрифта */
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50; /* Цвет кнопки */
-            color: white; /* Цвет текста кнопки */
-            border: none; /* Убираем рамку */
-            cursor: pointer; /* Указатель при наведении */
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Цвет кнопки при наведении */
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 
 <body>
-
     <div class="sidebar">
         <h3>Администратор</h3>
         <a href="/adm_int/components/show.php"><button>Компоненты</button></a>
@@ -180,122 +161,179 @@
             <button type="submit" class="logout-button">Выход</button>
         </form>
 
-        <!-- Кнопки для внесения и извлечения данных -->
-        <div class="action-buttons">
-            <button onclick="modalAddComponent()">Добавить операцию</button>
-            <button onclick="modalDeleteComponent()">Удалить операцию</button>
-        </div>
-        <!-- Модальное окно для добавления операции-->
+        <!-- Форма выбора устройства -->
+        <form method="GET" id="deviceForm" class="action-buttons">
+            <select name="device_id" onchange="this.form.submit()">
+                <option value="">Выберите связку (Техпроцесс - Устройство)</option>
+                <?php
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
+                $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
+                $selected_device = $_GET['device_id'] ?? null;
+
+                if ($conn) {
+                    $stmt = oci_parse(
+                        $conn,
+                        "SELECT t.tp_id, d.device_id, d.device_name 
+                         FROM technology t
+                         JOIN device d ON t.tp_device_id = d.device_id"
+                    );
+                    oci_execute($stmt);
+
+                    while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                        $selected = $selected_device == $row['DEVICE_ID'] ? 'selected' : '';
+                        echo '<option value="' . $row['DEVICE_ID'] . '" ' . $selected . '>'
+                            . 'TP' . $row['TP_ID'] . ' - '
+                            . htmlspecialchars($row['DEVICE_NAME'])
+                            . '</option>';
+                    }
+                    oci_free_statement($stmt);
+                }
+                ?>
+            </select>
+
+            <button type="button" onclick="modalAddComponent()">Добавить операцию</button>
+            <button type="button" onclick="modalDeleteComponent()">Удалить операцию</button>
+        </form>
+
+        <!-- Таблица операций -->
+        <?php
+        if ($conn && $selected_device) {
+            try {
+                $sql = "SELECT j.job_id, c.comp_name, t.tp_name, 
+                        u.us_firstname||' '||u.us_secondname as user_name
+                        FROM job j
+                        JOIN comp c ON j.job_comp_id = c.comp_id
+                        JOIN technology t ON j.job_tech_id = t.tp_id
+                        JOIN users u ON j.job_us_id = u.us_id
+                        WHERE c.comp_device_id = :device_id
+                        ORDER BY j.job_id DESC";
+
+                $stmt = oci_parse($conn, $sql);
+                oci_bind_by_name($stmt, ':device_id', $selected_device);
+                oci_execute($stmt);
+
+                echo "<table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Компонент</th>
+                            <th>Техпроцесс</th>
+                            <th>Ответственный</th>
+                        </tr>";
+
+                while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                    echo "<tr>
+                            <td>" . htmlspecialchars($row['JOB_ID']) . "</td>
+                            <td>" . htmlspecialchars($row['COMP_NAME']) . "</td>
+                            <td>" . htmlspecialchars($row['TP_NAME']) . "</td>
+                            <td>" . htmlspecialchars($row['USER_NAME']) . "</td>
+                          </tr>";
+                }
+                echo "</table>";
+
+                oci_free_statement($stmt);
+            } catch (Exception $e) {
+                echo '<p style="color: red;">Ошибка загрузки данных: ' . htmlspecialchars($e->getMessage()) . '</p>';
+            }
+        } elseif ($conn) {
+            echo '<p>Выберите связку из списка для просмотра операций</p>';
+        }
+        ?>
+
+        <!-- Модальное окно добавления -->
         <div id="modalAddComponent" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Добавить операцию</h2>
                 <form action="add.php" method="post">
-                    <input type="text" id="name" name="name" placeholder="Наименование, например, конденсатор электролитический" required>
-                    <input type="text" id="value" name="value" placeholder="Номинал, например, 10 uF 50 V" required>
-                    <input type="submit" value="Добавить">
-                </form>
-            </div>
-        </div>
-        <!-- Модальное окно для добавления операции-->
-        <div id="modalDeleteComponent" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <h2>Удалить операцию</h2>
-                <form action="delete.php" method="post">
-                    <input type="text" id="id" name="id" placeholder="Идентификатор операции" required>
-                    <input type="submit" value="Удалить">
+                    <input type="hidden" name="device_id" value="<?= $selected_device ?>">
+
+                    <?php if ($selected_device): ?>
+                        <!-- Компоненты -->
+                        <select name="comp_id" required>
+                            <?php
+                            $stmt = oci_parse(
+                                $conn,
+                                "SELECT comp_id, comp_name 
+                             FROM comp 
+                             WHERE comp_device_id = :device_id"
+                            );
+                            oci_bind_by_name($stmt, ':device_id', $selected_device);
+                            oci_execute($stmt);
+
+                            while ($comp = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                                echo '<option value="' . $comp['COMP_ID'] . '">'
+                                    . htmlspecialchars($comp['COMP_NAME'])
+                                    . '</option>';
+                            }
+                            oci_free_statement($stmt);
+                            ?>
+                        </select>
+
+                        <!-- Техпроцессы -->
+                        <select name="tech_id" required>
+                            <?php
+                            $stmt = oci_parse(
+                                $conn,
+                                "SELECT tp_id, tp_name 
+                             FROM technology 
+                             WHERE tp_device_id = :device_id"
+                            );
+                            oci_bind_by_name($stmt, ':device_id', $selected_device);
+                            oci_execute($stmt);
+
+                            while ($tech = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                                echo '<option value="' . $tech['TP_ID'] . '">'
+                                    . htmlspecialchars($tech['TP_NAME'])
+                                    . '</option>';
+                            }
+                            oci_free_statement($stmt);
+                            ?>
+                        </select>
+                    <?php endif; ?>
+
+                    <!-- Пользователи -->
+                    <select name="user_id" required>
+                        <?php
+                        $stmt = oci_parse($conn, "SELECT us_id, us_firstname, us_secondname FROM users");
+                        oci_execute($stmt);
+
+                        while ($user = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                            echo '<option value="' . $user['US_ID'] . '">'
+                                . htmlspecialchars($user['US_FIRSTNAME'] . ' ' . $user['US_SECONDNAME'])
+                                . '</option>';
+                        }
+                        oci_free_statement($stmt);
+                        ?>
+                    </select>
+                    <input type="text" name="job_name" required placeholder="Введите название операции"
+                        style="margin-top: 10px; padding: 8px; width: 100%;">
+                    <input type="submit" value="Добавить" style="margin-top: 10px;">
                 </form>
             </div>
         </div>
 
         <script>
-        function modalAddComponent() {
-            document.getElementById("modalAddComponent").style.display = "block";
-        }
-        function modalDeleteComponent() {
-            document.getElementById("modalDeleteComponent").style.display = "block";
-        }
-        function closeModal() {
-            document.getElementById("modalAddComponent").style.display = "none";
-            document.getElementById("modalDeleteComponent").style.display = "none";
-        }
+            function modalAddComponent() {
+                document.getElementById("modalAddComponent").style.display = "block";
+            }
+
+            function modalDeleteComponent() {
+                // Реализация удаления при необходимости
+            }
+
+            function closeModal() {
+                document.getElementById("modalAddComponent").style.display = "none";
+            }
+
+            // Закрытие модального окна при клике вне его
+            window.onclick = function (event) {
+                if (event.target.className === 'modal') {
+                    event.target.style.display = "none";
+                }
+            }
         </script>
 
-        <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
-        try {
-            $conn = oci_connect($db_shema_login, $db_shema_pass, $db);
-            if (!$conn) {
-                throw new Exception('Ошибка подключения к Oracle: ' . oci_error()['message']);
-            }
-            // SQL-запрос для получения операций
-            $sql = "SELECT comp_id, comp_name, comp_value FROM comp ORDER BY comp_id DESC";
-            $stmt = oci_parse($conn, $sql);
-            oci_execute($stmt);
-
-            echo "<table border='1'>
-                <tr>
-                    <th>ID</th>
-                    <th>Наименование</th>
-                    <th>Компонент</th>
-                    <th>Ответственный</th>
-                </tr>";
-
-        while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['COMP_ID']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['COMP_NAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['COMP_VALUE']) . "</td>";
-            echo "</tr>";
-        }
-
-        // Закрытие таблицы
-        echo "</table>";
-
-            oci_free_statement($stmt);
-            oci_close($conn);
-
-        } catch (Exception $e) {
-            echo 'Ошибка: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8') . '<br>';
-            exit();
-        }
-        ?>
-
-        <!-- CSS для чередующихся строк -->
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            /* Чередующиеся строки таблицы */
-            tbody tr:nth-child(even) {
-                background-color: #c5c0c0;
-                /* Светло-серый для четных строк */
-            }
-
-            tbody tr:nth-child(odd) {
-                background-color: #ffffff;
-                /* Белый для нечетных строк */
-            }
-        </style>
-
     </div>
-
 </body>
 
 </html>

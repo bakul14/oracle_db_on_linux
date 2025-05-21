@@ -7,16 +7,18 @@ if (!$conn) {
 }
 
 // Получение данных из формы
-$input_name = $_POST['name'];
-$input_value = $_POST['value'];
+// $input_name = $_POST['name'];
+// $input_value = $_POST['value'];
 
-// SQL-запрос для добавления сотрудника
-$sql = "INSERT INTO comp (comp_name, comp_value) VALUES (:input_name, :input_value)";
+// SQL-запрос для добавления задачи
+$sql = "INSERT INTO job (job_comp_id, job_tech_id, job_us_id, job_name)
+          VALUES (:job_comp_id, :job_tech_id, :job_us_id, :job_name)";
 $stmt = oci_parse($conn, $sql);
 
-// Привязка параметров
-oci_bind_by_name($stmt, ':input_name', $input_name);
-oci_bind_by_name($stmt, ':input_value', $input_value);
+oci_bind_by_name($stmt, ':job_comp_id', $_POST['comp_id']);
+oci_bind_by_name($stmt, ':job_tech_id', $_POST['tech_id']);
+oci_bind_by_name($stmt, ':job_us_id', $_POST['user_id']);
+oci_bind_by_name($stmt, ':job_name', $_POST['job_name']);
 
 // Выполнение запроса
 if (oci_execute($stmt)) {
