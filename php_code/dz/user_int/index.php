@@ -102,61 +102,17 @@
 
     <div class="sidebar">
         <h3>Работник</h3>
-        <button onclick="alert('Открытие таблицы Документы...')">Документы</button>
-        <button onclick="alert('Открытие таблицы Устройства...')">Устройства</button>
-        <button onclick="alert('Открытие таблицы Операции...')">Операции</button>
-        <button onclick="alert('Открытие таблицы Компоненты...')">Компоненты</button>
-        <button onclick="alert('Открытие таблицы Расходные материалы...')">Расходные материалы</button>
+        <a href="/user_int/components/show.php"><button>Компоненты</button></a>
+        <a href="/user_int/devices/show.php"><button>Устройства</button></a>
+        <a href="/user_int/jobs/show.php"><button>Операции</button></a>
+        <a href="/user_int/tp/show.php"><button>Техпроцесс</button></a>
     </div>
 
     <div class="content">
-        <h2>Работники, закрепленные за конкретной работой</h2>
-
+        <h2>АСУ изготовления радиопередатчика. РАБОТНИК</h2>
         <form action="/auth/logout.php" method="post" style="display:inline;">
             <button type="submit" class="logout-button">Выход</button>
         </form>
-
-        <!-- Кнопки для внесения и извлечения данных -->
-        <div class="action-buttons">
-            <button onclick="alert('Внесение данных...')">Ввести</button>
-            <button onclick="alert('Извлечение данных...')">Прочитать</button>
-            <button onclick="alert('Извлечение данных...')">Обновить</button>
-            <button onclick="alert('Извлечение данных...')">Создать</button>
-            <button onclick="alert('Извлечение данных...')">Удалить</button>
-        </div>
-
-        <!-- CSS для чередующихся строк -->
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            /* Чередующиеся строки таблицы */
-            tbody tr:nth-child(even) {
-                background-color: #c5c0c0;
-                /* Светло-серый для четных строк */
-            }
-
-            tbody tr:nth-child(odd) {
-                background-color: #ffffff;
-                /* Белый для нечетных строк */
-            }
-        </style>
-
     </div>
 
 </body>
