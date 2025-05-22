@@ -314,6 +314,39 @@
             echo '<div style="color: red;">Ошибка: ' . htmlspecialchars($e->getMessage()) . '</div>';
         }
         ?>
+        
+        <!-- CSS для чередующихся строк -->
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #007bff;
+                color: white;
+            }
+
+            /* Чередующиеся строки таблицы */
+            tbody tr:nth-child(even) {
+                background-color: #c5c0c0;
+                /* Светло-серый для четных строк */
+            }
+
+            tbody tr:nth-child(odd) {
+                background-color: #ffffff;
+                /* Белый для нечетных строк */
+            }
+        </style>
+
     </div>
 </body>
 </html>
